@@ -17,11 +17,7 @@ Follow these steps to set up and run the application:
 
 To install the necessary packages, navigate to the project directory and run:
 
-```html
-<pre>
-<code id="npm-install">npm install</code>
-<button onclick="copyToClipboard('#npm-install')">Copy</button>
-</pre>
+```bash
 npm install
 ```
 
