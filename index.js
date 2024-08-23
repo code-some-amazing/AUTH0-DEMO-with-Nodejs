@@ -6,14 +6,16 @@ dotenv.config();
 
 const app = express();
 
+// *NOTICE*
+// Fill your own credentials from "auth0.com"
 const config = {
   authRequired: false,
   auth0Logout: true,
-  baseURL: 'http://localhost:3000',
-  clientID: '6DUk5nM5n2qh0gVhlss41gsVybIljryT',
-  issuerBaseURL: 'https://psdeveloper.jp.auth0.com',
-  secret: 'zzYAdc3e_4MA_wLDBAoloEV4DIeIOOh40nIBkWdmYNUhUmI6ylT3VwbJX2Xu8fXZ',
-  clientSecret: 'zzYAdc3e_4MA_wLDBAoloEV4DIeIOOh40nIBkWdmYNUhUmI6ylT3VwbJX2Xu8fXZ',
+  baseURL: 'YOUR_BASEURL',
+  clientID: 'YOUR_CLIENT-ID',
+  issuerBaseURL: 'YOUR_ISSUER_BASEURL',
+  secret: 'YOUR_SECRET',
+  clientSecret: 'YOUR_CLIENT-SECRET',
   routes: {
     login: false,
   },
@@ -23,6 +25,7 @@ app.use(auth(config));
 
 app.use(express.static('public'));
 
+// USER INTERFACE
 const layout = (content) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +62,7 @@ const layout = (content) => `
 </html>
 `;
 
+// HOME
 app.get('/', (req, res) => {
   const content = `
     <div class="jumbotron">
@@ -73,10 +77,12 @@ app.get('/', (req, res) => {
   res.send(layout(content));
 });
 
+// LOGIN
 app.get('/login', (req, res) => {
   res.oidc.login({ returnTo: '/profile' });
 });
 
+// PROFILE
 app.get('/profile', requiresAuth(), (req, res) => {
   const user = req.oidc.user;
   const loginTime = new Date(user.updated_at).toLocaleString();
@@ -95,10 +101,12 @@ app.get('/profile', requiresAuth(), (req, res) => {
   res.send(layout(content));
 });
 
+// LOGOUT
 app.get('/logout', (req, res) => {
   res.oidc.logout({ returnTo: '/' });
 });
 
+// PORT LISTENING
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
